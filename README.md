@@ -7,19 +7,19 @@ A package to detect your swipe directions and provides you with callbacks to han
 
 ```dart
 SwipeDetector(
-  onSwipe: (direction, offset) {
+  onSwipe: (direction) {
     print(direction);
   },
-  onSwipeUp: (offset) {
+  onSwipeUp: () {
     print('up');
   },
-  onSwipeDown: (offset) {
+  onSwipeDown: () {
     print('down');
   },
-  onSwipeLeft: (offset) {
+  onSwipeLeft: () {
     print('left');
   },
-  onSwipeRight: (offset) {
+  onSwipeRight: () {
     print('right');
   },
   child: const Container(
