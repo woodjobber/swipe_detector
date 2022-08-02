@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swipe_detector/src/swipe_direction.dart';
+
+import '/src/swipe_direction.dart';
 
 class SwipeDetector extends StatefulWidget {
   const SwipeDetector({
@@ -26,28 +27,23 @@ class SwipeDetector extends StatefulWidget {
   /// Called when the user has swiped in a particular direction.
   ///
   /// - The [direction] parameter is the [SwipeDirection] of the swipe.
-  /// - The [offset] parameter is the offset of the swipe in the [direction].
-  final void Function(SwipeDirection direction, Offset offset)? onSwipe;
+  final void Function(SwipeDirection direction)? onSwipe;
 
   /// Called when the user has swiped upwards.
   ///
-  /// - The [offset] parameter is the offset of the swipe since it started.
-  final void Function(Offset offset)? onSwipeUp;
+  final VoidCallback? onSwipeUp;
 
   /// Called when the user has swiped downwards.
   ///
-  /// - The [offset] parameter is the offset of the swipe since it started.
-  final void Function(Offset offset)? onSwipeDown;
+  final VoidCallback? onSwipeDown;
 
   /// Called when the user has swiped to the left.
   ///
-  /// - The [offset] parameter is the offset of the swipe since it started.
-  final void Function(Offset offset)? onSwipeLeft;
+  final VoidCallback? onSwipeLeft;
 
   /// Called when the user has swiped to the right.
   ///
-  /// - The [offset] parameter is the offset of the swipe since it started.
-  final void Function(Offset offset)? onSwipeRight;
+  final VoidCallback? onSwipeRight;
 
   @override
   _SwipeDetectorState createState() => _SwipeDetectorState();
@@ -59,7 +55,7 @@ class _SwipeDetectorState extends State<SwipeDetector> {
 
   late Offset _startVerticalDragPosition;
   late Offset _updateVerticalDragPosition;
-  bool dragEnd = true;
+  bool alreadyDragEnd = true;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +65,7 @@ class _SwipeDetectorState extends State<SwipeDetector> {
         _startVerticalDragPosition = details.localPosition;
       },
       onVerticalDragUpdate: (details) {
-        if (!dragEnd) {
+        if (!alreadyDragEnd) {
           return;
         }
         _updateVerticalDragPosition = details.localPosition;
@@ -77,27 +73,25 @@ class _SwipeDetectorState extends State<SwipeDetector> {
         if (direction == null) {
           return;
         }
-        dragEnd = false;
-        Offset offset = getVerticalDragOffset();
-        offset = Offset(offset.dx.abs(), offset.dy.abs());
+        alreadyDragEnd = false;
         if (direction == SwipeDirection.up) {
-          widget.onSwipeUp?.call(offset);
+          widget.onSwipeUp?.call();
         } else {
-          widget.onSwipeDown?.call(offset);
+          widget.onSwipeDown?.call();
         }
-        widget.onSwipe?.call(direction, offset);
+        widget.onSwipe?.call(direction);
       },
       onVerticalDragEnd: (endDetails) {
-        dragEnd = true;
+        alreadyDragEnd = true;
       },
       onVerticalDragCancel: () {
-        dragEnd = true;
+        alreadyDragEnd = true;
       },
       onHorizontalDragStart: (details) {
         _startHorizontalDragPosition = details.localPosition;
       },
       onHorizontalDragUpdate: (details) {
-        if (!dragEnd) {
+        if (!alreadyDragEnd) {
           return;
         }
         _updateHorizontalDragPosition = details.localPosition;
@@ -105,21 +99,21 @@ class _SwipeDetectorState extends State<SwipeDetector> {
         if (direction == null) {
           return;
         }
-        dragEnd = false;
+        alreadyDragEnd = false;
         Offset offset = getHorizontalDragOffset();
         offset = Offset(offset.dx.abs(), offset.dy.abs());
         if (direction == SwipeDirection.right) {
-          widget.onSwipeRight?.call(offset);
+          widget.onSwipeRight?.call();
         } else {
-          widget.onSwipeLeft?.call(offset);
+          widget.onSwipeLeft?.call();
         }
-        widget.onSwipe?.call(direction, offset);
+        widget.onSwipe?.call(direction);
       },
       onHorizontalDragEnd: (endDetails) {
-        dragEnd = true;
+        alreadyDragEnd = true;
       },
       onHorizontalDragCancel: () {
-        dragEnd = true;
+        alreadyDragEnd = true;
       },
       child: widget.child,
     );

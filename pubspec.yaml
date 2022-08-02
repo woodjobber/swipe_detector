@@ -1,7 +1,7 @@
-name: swipe_detector
-description: A flutter package detect left ,right,up, down siwpe.
-version: 0.0.1
-homepage:
+name: swipe_direction_detector
+description: A flutter package detect left ,right,up, down siwpes.
+version: 0.0.2
+homepage: https://github.com/woodjobber/swipe_detector.git
 
 environment:
   sdk: ">=2.14.0 <3.0.0"
